@@ -1,0 +1,26 @@
+import urllib.request, urllib.parse, urllib.error
+import json
+
+# Ignore SSL certificate errors
+ctx = ssl.create_default_context()
+ctx.check_hostname = False
+ctx.verify_mode = ssl.CERT_NONE
+jsonURL = input('Enter location: ')
+if len(jsonURL) < 1:
+    quit()
+
+parms = dict()
+parms['address'] = jsonURL
+
+print('Retrieving', jsonURL)
+
+uh = urllib.request.urlopen(jsonURL, context=ctx)
+
+data = uh.read()
+info = json.loads(data)
+
+print('Retrieved', len(info), "characters")
+numCount = 0
+for item in info:
+    numCount = numCount + 1
+    print('Count', item['comments'][item]['count'])
